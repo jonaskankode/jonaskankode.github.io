@@ -1,0 +1,187 @@
+body{
+
+  width:1200px;
+}
+
+img{
+  object-fit:scale-down;
+  height:200px;
+  width:200px;
+}
+
+.innpakning{
+  width:auto; /*Bredden på flexboksen*/
+  background-color: #202020; /* En mørk gråfarge */
+  margin:auto;/* Like høyre og venstre marger */
+  display:flex; /* lager en flexboks */
+  flex-direction:row; /* plasserer bboksene i en en kolonne */
+  flex-wrap: wrap;
+}
+
+.topptekst{
+    height: 120px;
+    flex-basis:100%;
+    background-color: #909090;
+    padding:5px; /* Indre marg */
+    margin: 5px; /* Ytre marg */
+    order:1;
+}
+
+
+
+.meny{
+  flex-basis:405px;
+  height:300px;
+  padding:5px;
+  margin-left:5px;
+  order:2;
+  background-color: cyan;
+  margin-right:2.5px;
+  display:flex;
+  flex-direction: column;
+}
+
+.bilder-av-meg{
+  flex-basis:760px;
+  height:300px;
+  padding:5px;
+  row-gap: 30px;
+  order:3;
+  float:right;
+  background-color: red;
+  margin-left: 2.5px;
+  margin-right: 5px;
+  display:flex;
+  flex-direction:row;
+}
+
+.meg_i_timen{
+  flex-basis:45%;
+
+}
+
+.mine-interesser{
+  margin-top: 5px;
+  flex-basis:466px;
+  margin-left: 5px;
+  margin-right: 2.5px;
+  order:4;
+  background-color: indigo;
+  padding:5px;
+  display:flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.fotball{
+  order:1;
+  background-color: violet;
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
+  padding:2.5px;
+}
+
+.bitcoin{
+  order:2;
+  background-color:magenta;
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
+  padding:2.5px;
+}
+
+.speider{
+  order:3;
+  background-color:orange;
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
+  padding:2.5px;
+}
+
+.dyr{
+  order:4;
+  background-color:lime;
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
+  padding:2.5px;
+}
+
+.interrese-bilder{
+  display:flex;
+  order:5;
+  padding:5px;
+  flex-basis:699px;
+  margin-left: 2.5px;
+  margin-right: 5px;
+  background-color: yellow;
+  flex-direction:row;
+  flex-wrap: wrap;
+  margin-top:5px;
+}
+
+.Liverpool-bilder{
+  flex-basis:100%;
+  order:1
+
+}
+
+.Dyre-bilder{
+  flex-basis:100%;
+  order:2
+}
+
+.bunntekst{
+  background-color: grey;
+  padding:5px;
+  margin:5px;
+  order:6;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-basis:100%;
+  display: flex;
+  text-align: center;
+  height:200px;
+}
+
+ul{
+
+   list-style-type: none; /*fjerner kulepunkter*/
+
+   margin:0;/*fjerner alle mellomrom*/
+
+   padding:0;/*fjerner alle mellomrom*/
+
+}
+
+
+
+ul li{
+
+   display:inline; /*gjør listepunktene til inline*/
+
+}
+
+
+
+ul a{
+
+   padding: 5px 20px; /* avstand mellom bokskant og innhold, topp/bunn 10px og sider 30px*/
+
+   color: #333333; /*mørk grå tekst*/
+
+   font-weight: bold; /*fet tekst*/
+
+   text-decoration:none;/* fjerner understrek*/
+
+   background-color:cyan;
+
+}
+
+
+
+ul a:hover{
+
+   background-color: #f100bd; /*lys gul*/
+
+   font-size: 20px;
+
+   font-style: italic;
