@@ -1,0 +1,157 @@
+
+/* .nyheter{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  max-width: 80rem;
+  grid-auto-rows: minmax(12rem, auto);
+  gap: 1rem;
+
+}
+
+.nyhter a{
+  background-color: #eee;
+  display:flex;
+  align-items: flex-end;
+  padding-left: 1rem;
+  padding-bottom: 1rem;
+  position:relative;
+}
+
+.nyheter h1{
+  position: absolute;
+  margin:0;
+  color:white;
+  background: rgba(128, 128, 128, 0.562);
+}
+
+
+
+.nyheter img{
+  position: absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.tre-kolonner { grid-column: span 3; }
+.fire-kolonner { grid-column: span 4;  }
+.seks-kolonner { grid-column: span 6;  }
+.to-rader{ grid-row: span 2;  } */
+
+.nyheter{
+
+    display: grid;
+
+    grid-template-columns: repeat(12, 1fr);
+
+    max-width: 80rem;
+
+    grid-auto-rows: minmax(12rem, auto);
+
+    gap: 1rem;
+
+}
+
+
+
+.nyheter img{
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    object-position: center;
+
+}
+
+
+
+.nyheter h1{
+
+    position: absolute;
+
+    margin: 0;
+
+    color: white;
+
+    background-color: #eeee; /*#cc2ed1;*/
+
+    padding:5px;
+
+    color: black;
+
+
+}
+
+.nyheter h2{
+
+    position: absolute;
+
+    margin: 0;
+
+    color: white;
+
+    background-color: #eeee; /*#cc2ed1;*/
+
+    padding:5px;
+
+    color: black;
+
+}
+
+
+.nyheter h3{
+
+    position: absolute;
+
+    margin: 0;
+
+    color: white;
+
+    background-color: #eeee; /*#cc2ed1;*/
+
+    padding:5px;
+
+    color: black;
+
+
+}
+
+
+.nyheter a{
+
+    background-color: #eee;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    padding-left: 1rem;
+
+    padding-bottom: 1rem;
+
+    position: relative;
+
+}
+
+
+
+
+.tre-kolonner{ grid-column: span 3; border: solid black;}
+
+.fire-kolonner{ grid-column: span 4; border: solid black;}
+
+.seks-kolonner{ grid-column: span 6; border: solid black;}
+
+.to-rader{ grid-row: span 2; border: solid black;}
