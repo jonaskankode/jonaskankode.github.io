@@ -1,0 +1,38 @@
+nav{
+  font-family: sans-serif;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Meny-vannrett{
+  order:1
+  flex:1
+}
+
+nav a{
+
+  flex:1;
+  text-decoration: none;
+  padding: 1rem;
+  background-color: steelblue;
+  color: white;
+  border: 1px solid white;
+}
+
+
+
+.Meny-loddrett{
+
+  order:2
+  flex:1;
+  flex-direction: column;
+}
+
+article a{
+
+  text-decoration: none;
+  padding: 1rem;
+  background-color: steelblue;
+  color: white;
+  border: 1px solid white;
+}
