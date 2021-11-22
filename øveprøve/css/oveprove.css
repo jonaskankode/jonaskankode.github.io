@@ -9,10 +9,10 @@ h2{
 }
 
 table{
-  width:100%;
+  width:98%;
 }
 body{
-width:50%;
+width:60%;
 margin:auto;
 }
 
@@ -34,7 +34,6 @@ margin:auto;
 
 .tre-kolonner{
 grid-column: span 3;
-
 
 }
 
@@ -74,10 +73,12 @@ grid-column: span 3;
 .gul-boks{
   grid-column: span 4;
   background-color: yellow;
-
+  text-align: auto;
 }
 
-
+.padding{
+  padding: 5px;
+}
 
 .innhold img{
   width: 100%;
@@ -95,6 +96,7 @@ table, th, td {
   padding: 5px;
   border: 1px solid lightgrey;
   border-collapse: collapse;
+
 }
 
 .blaa-farge{
@@ -103,4 +105,11 @@ table, th, td {
 
 .border{
   border: 2.5px solid black;
+}
+
+
+.fint{
+  /*position: relative fixed;*/
+  padding-top:3rem;
+  padding-left: 2%;
 }

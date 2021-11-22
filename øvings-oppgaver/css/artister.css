@@ -1,0 +1,86 @@
+.innhold{
+  display: grid;
+
+  grid-template-columns: repeat(12, 1fr);
+
+  max-width: 80rem;
+
+  grid-auto-rows: minmax(12rem, auto);
+
+  gap: 1rem;
+
+  font-family:Helvetica,Arial,sans-serif;
+
+}
+
+.to-rader{
+  grid-row: span 2;
+}
+
+.tre-kolonner{
+grid-column: span 3;
+
+
+}
+
+.fire-kolonner{
+  grid-column: span 4;
+
+}
+
+.fem-kolonner{
+ grid-column: span 5;
+}
+
+.seks-kolonner{
+ grid-column: span 6;
+}
+
+.sju-kolonner{
+  grid-column: span 7;
+}
+
+.aatte-kolonner{
+  grid-column: span 8;
+}
+
+.innhold img{
+  width: 100%;
+  height: 100%;
+  object-fit:cover;
+  object-position: center;
+}
+
+.overskrift{
+  display: grid;
+  grid-column: auto;
+  background-color: #4e7514;
+  color:black;
+}
+
+
+.oransje-farge{
+  background-color: #c26d06;
+}
+
+.ravnefarge{
+  background-color: #876f42;
+}
+
+.gul-farge{
+  background-color: #f2b138;
+}
+
+.blaa-farge{
+  background-color: navy;
+}
+
+.padding {
+  padding: 1rem;
+}
+
+h1{
+  font-size: 300%;
+  text-align: center;
+  font-family:Helvetica,Arial,sans-serif;
+}
