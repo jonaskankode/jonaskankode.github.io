@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<!-- saved from url=(0012)about:srcdoc -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<style>
+			html, body {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	color: #333;
+	margin: 0;
+	padding: 8px;
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+a {
+	color: rgb(0,100,200);
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:visited {
+	color: rgb(0,80,160);
+}
+
+label {
+	display: block;
+}
+
+input, button, select, textarea {
+	font-family: inherit;
+	font-size: inherit;
+	-webkit-padding: 0.4em 0;
+	padding: 0.4em;
+	margin: 0 0 0.5em 0;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+}
+
+input:disabled {
+	color: #ccc;
+}
+
+button {
+	color: #333;
+	background-color: #f4f4f4;
+	outline: none;
+}
+
+button:disabled {
+	color: #999;
+}
+
+button:not(:disabled):active {
+	background-color: #ddd;
+}
+
+button:focus {
+	border-color: #666;
+}
+
+		</style>
+
+		<script>
+			(function(){
+				function handle_message(ev) {
+					let { action, cmd_id } = ev.data;
+					const send_message = (payload) => parent.postMessage( { ...payload }, ev.origin);
+					const send_reply = (payload) => send_message({ ...payload, cmd_id });
+					const send_ok = () => send_reply({ action: 'cmd_ok' });
+					const send_error = (message, stack) => send_reply({ action: 'cmd_error', message, stack });
+
+					if (action === 'eval') {
+						try {
+							const { script } = ev.data.args;
+							eval(script);
+							send_ok();
+						} catch (e) {
+							send_error(e.message, e.stack);
+						}
+					}
+
+					if (action === 'catch_clicks') {
+						try {
+							const top_origin = ev.origin;
+							document.body.addEventListener('click', event => {
+								if (event.which !== 1) return;
+								if (event.metaKey || event.ctrlKey || event.shiftKey) return;
+								if (event.defaultPrevented) return;
+
+								// ensure target is a link
+								let el = event.target;
+								while (el && el.nodeName !== 'A') el = el.parentNode;
+								if (!el || el.nodeName !== 'A') return;
+
+								if (el.hasAttribute('download') || el.getAttribute('rel') === 'external' || el.target) return;
+
+								event.preventDefault();
+
+								if (el.href.startsWith(top_origin)) {
+									const url = new URL(el.href);
+									if (url.hash[0] === '#') {
+										window.location.hash = url.hash;
+										return;
+									}
+								}
+
+								window.open(el.href, '_blank');
+							});
+							send_ok();
+						} catch(e) {
+							send_error(e.message, e.stack);
+						}
+					}
+				}
+
+				window.addEventListener('message', handle_message, false);
+
+				window.onerror = function (msg, url, lineNo, columnNo, error) {
+					parent.postMessage({ action: 'error', value: error }, '*');
+				}
+
+				window.addEventListener("unhandledrejection", event => {
+					parent.postMessage({ action: 'unhandledrejection', value: event.reason }, '*');
+				});
+			}).call(this);
+
+			let previous = { level: null, args: null };
+
+			['clear', 'log', 'info', 'dir', 'warn', 'error', 'table'].forEach((level) => {
+				const original = console[level];
+				console[level] = (...args) => {
+					const stringifiedArgs = stringify(args);
+					if (
+						previous.level === level &&
+						previous.args &&
+						previous.args === stringifiedArgs
+					) {
+						parent.postMessage({ action: 'console', level, duplicate: true }, '*');
+					} else {
+						previous = { level, args: stringifiedArgs };
+
+						try {
+							parent.postMessage({ action: 'console', level, args }, '*');
+						} catch (err) {
+							parent.postMessage({ action: 'console', level: 'unclonable' }, '*');
+						}
+					}
+
+					original(...args);
+				}
+			});
+
+			[
+				{ method: 'group', action: 'console_group' },
+				{ method: 'groupEnd', action: 'console_group_end' },
+				{ method: 'groupCollapsed', action: 'console_group_collapsed' },
+			].forEach((group_action) => {
+				const original = console[group_action.method];
+				console[group_action.method] = (label) => {
+					parent.postMessage({ action: group_action.action, label }, '*');
+
+					original(label);
+				};
+			});
+
+			const timers = new Map();
+			const original_time = console.time;
+			const original_timelog = console.timeLog;
+			const original_timeend = console.timeEnd;
+
+			console.time = (label = 'default') => {
+				original_time(label);
+				timers.set(label, performance.now());
+			}
+			console.timeLog = (label = 'default') => {
+				original_timelog(label);
+				const now = performance.now();
+				if (timers.has(label)) {
+					parent.postMessage({ action: 'console', level: 'system-log', args: [`${label}: ${now - timers.get(label)}ms`] }, '*');
+				} else {
+					parent.postMessage({ action: 'console', level: 'system-warn', args: [`Timer '${label}' does not exist`] }, '*');
+				}
+			}
+			console.timeEnd = (label = 'default') => {
+				original_timeend(label);
+				const now = performance.now();
+				if (timers.has(label)) {
+					parent.postMessage({ action: 'console', level: 'system-log', args: [`${label}: ${now - timers.get(label)}ms`] }, '*');
+				} else {
+					parent.postMessage({ action: 'console', level: 'system-warn', args: [`Timer '${label}' does not exist`] }, '*');
+				}
+				timers.delete(label);
+			};
+
+			const original_assert = console.assert;
+			console.assert = (condition, ...args) => {
+				if (condition) {
+					const stack = new Error().stack;
+					parent.postMessage({ action: 'console', level: 'assert', args, stack }, '*');
+				}
+				original_assert(condition, ...args);
+			};
+
+			const counter = new Map();
+			const original_count = console.count;
+			const original_countreset = console.countReset;
+
+			console.count = (label = 'default') => {
+				counter.set(label, (counter.get(label) || 0) + 1);
+				parent.postMessage({ action: 'console', level: 'system-log', args: `${label}: ${counter.get(label)}` }, '*');
+				original_count(label);
+			};
+
+			console.countReset = (label = 'default') => {
+				if (counter.has(label)) {
+					counter.set(label, 0);
+				} else {
+					parent.postMessage({ action: 'console', level: 'system-warn', args: `Count for '${label}' does not exist` }, '*');
+				}
+				original_countreset(label);
+			};
+
+			const original_trace = console.trace;
+
+			console.trace = (...args) => {
+				const stack = new Error().stack;
+				parent.postMessage({ action: 'console', level: 'trace', args, stack }, '*');
+				original_trace(...args);
+			};
+
+			function stringify(args) {
+				try {
+					return JSON.stringify(args);
+				} catch (error) {
+					return null;
+				}
+			}
+		</script>
+	<style id="svelte-bsg1cy">table.svelte-bsg1cy,th.svelte-bsg1cy,td.svelte-bsg1cy{padding:7px;border:1px solid lightgrey;border-collapse:collapse}.fersken.svelte-bsg1cy{background-color:peach}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQXBwLnN2ZWx0ZSIsInNvdXJjZXMiOlsiQXBwLnN2ZWx0ZSJdLCJzb3VyY2VzQ29udGVudCI6WyI8c2NyaXB0PlxubGV0IG92ZXJza3JpZnQgPVwiU3RyaW5nLW1ldG9kZXJcIlxuPC9zY3JpcHQ+XG5cbjxoMT5cbiBPdmVyc2lrdCBvdmVyIG55dHRpZ2Uge292ZXJza3JpZnR9XG48L2gxPlxuXG48cD5cblx0c3RyaW5nLnRvVXBwZXJDYXNlKCApOlxuXHQ8Yj57b3ZlcnNrcmlmdC50b1VwcGVyQ2FzZSgpfTwvYj5cbjwvcD5cblxuPHA+XG5cdHN0cmluZy5zdWJzdHJpbmcoc3RhcnQsc2x1dHQpOlxuXHQ8Yj57b3ZlcnNrcmlmdC5zdWJzdHJpbmcoMiw2KX08L2I+XG48L3A+XG5cbjxwPlxuXHRzdHJpbmcucmVwbGFjZShcIkdhbW1lbCB0ZWtzdFwiLCBcIk55IHRla3N0XCIpOiBcblx0PGI+e292ZXJza3JpZnQucmVwbGFjZShcIm1ldG9kZXJcIiwgXCJCZWFuXCIpfTwvYj5cbjwvcD5cblxuXG48dGFibGU+XG4gICAgPHRyIGNsYXNzPVwiZmVyc2tlblwiPlxuICAgICAgPHRoPktvZGU8L3RoPlxuICAgICAgPHRoPkZvcmtsYXJpbmc8L3RoPlxuICAgICAgPHRoPlJlc3VsdGF0PC90aD5cbiAgICA8L3RyPlxuICAgIDx0cj5cbiAgICAgIDx0ZD5cInBlYWNocHVmZlwiLmNoYXJBdCgyKTwvdGQ+XG4gICAgICA8dGQ+VGVnbmV0IHDDpSBlbiBiZXN0ZW10IHBsYXNzPC90ZD5cbiAgICAgIDx0ZD5hPC90ZD5cbiAgICA8L3RyPlxuICAgIDx0cj5cbiAgICAgIDx0ZD5cInBlYWNocHVmZlwiLmxlbmd0aDwvdGQ+XG4gICAgICA8dGQ+QW50YWxsIHRlZ248L3RkPlxuICAgICAgPHRkPjk8L3RkPlxuICAgIDwvdHI+XG48dHI+XG4gICAgICA8dGQ+XCJwZWFjaHB1ZmZcIi5pbmNsdWRlcyhcInB1ZmZcIik8L3RkPlxuICAgICAgPHRkPlNqZWtrZXIgb20gZXQgb3JkIGZpbm5lcyBpIGV0IGFubmV0PC90ZD5cbiAgICAgIDx0ZD57XCJwZWFjaHB1ZmZcIi5pbmNsdWRlcyhcImJsw7hmZlwiKX08L3RkPlxuICAgIDwvdHI+XG4gIDwvdGFibGU+XG5cbjxzdHlsZT4gXG5cdHRhYmxlLCB0aCwgdGQge1xuICBwYWRkaW5nOiA3cHg7XG4gIGJvcmRlcjogMXB4IHNvbGlkIGxpZ2h0Z3JleTtcbiAgYm9yZGVyLWNvbGxhcHNlOiBjb2xsYXBzZTtcblx0fVxuXHQuZmVyc2tlbntcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiBwZWFjaDtcblx0fVxuPC9zdHlsZT5cblxuXG5cbiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFnREMsbUJBQUssQ0FBRSxnQkFBRSxDQUFFLEVBQUUsY0FBQyxDQUFDLEFBQ2QsT0FBTyxDQUFFLEdBQUcsQ0FDWixNQUFNLENBQUUsR0FBRyxDQUFDLEtBQUssQ0FBQyxTQUFTLENBQzNCLGVBQWUsQ0FBRSxRQUFRLEFBQzFCLENBQUMsQUFDRCxzQkFBUSxDQUFDLEFBQ1IsZ0JBQWdCLENBQUUsS0FBSyxBQUN4QixDQUFDIn0= */</style></head>
+	<body><h1>Oversikt over nyttige String-metoder</h1> <p>string.toUpperCase( ):
+	<b>STRING-METODER</b></p> <p>string.substring(start,slutt):
+	<b>ring</b></p> <p>string.replace("Gammel tekst", "Ny tekst"): 
+	<b>String-Bean</b></p> <table class="svelte-bsg1cy"><tr class="fersken svelte-bsg1cy"><th class="svelte-bsg1cy">Kode</th> <th class="svelte-bsg1cy">Forklaring</th> <th class="svelte-bsg1cy">Resultat</th></tr> <tr><td class="svelte-bsg1cy">"peachpuff".charAt(2)</td> <td class="svelte-bsg1cy">Tegnet på en bestemt plass</td> <td class="svelte-bsg1cy">a</td></tr> <tr><td class="svelte-bsg1cy">"peachpuff".length</td> <td class="svelte-bsg1cy">Antall tegn</td> <td class="svelte-bsg1cy">9</td></tr> <tr><td class="svelte-bsg1cy">"peachpuff".includes("puff")</td> <td class="svelte-bsg1cy">Sjekker om et ord finnes i et annet</td> <td class="svelte-bsg1cy">false</td></tr></table></body></html>
