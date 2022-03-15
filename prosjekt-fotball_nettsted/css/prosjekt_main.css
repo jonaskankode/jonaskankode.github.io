@@ -1,14 +1,24 @@
 .innhold{
   display:grid;
   grid-template-columns: repeat(12, 1fr);
-  max-width: 80rem;
   grid-auto-rows: minmax(12rem, auto);
   gap: 1rem;
+
 }
 
+@media only screen and (min-width:1200px){
+  .innhold{
+    max-width:80rem;
+    margin:auto;
+  }
+}
 
 .to-rader{
   grid-row: span 2;
+}
+
+.tre-rader{
+  grid-row: span 3;
 }
 
 .tre-Kolonner{
@@ -47,6 +57,7 @@ grid-column: span 3;
 
 .fin-skrift{
   font-family: Helvetica,Arial,sans-serif;
+  color:white;
 }
 
 .innhold img{
@@ -58,7 +69,7 @@ grid-column: span 3;
 
 .overskrift{
   display: grid;
-  grid-column: auto;
   color:white;
   text-align: left;
+  padding:2%;
 }
