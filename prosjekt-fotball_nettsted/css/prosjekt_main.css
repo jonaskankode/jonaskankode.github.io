@@ -63,7 +63,7 @@ grid-column: span 3;
 .innhold img{
   width: 100%;
   height: 100%;
-  object-fit:cover;
+  object-fit:contain;
   object-position: center;
 }
 
@@ -72,4 +72,21 @@ grid-column: span 3;
   color:white;
   text-align: left;
   padding:2%;
+}
+
+.flyt{
+  float:right;
+  width:100%;
+}
+
+.flyt a{
+
+
+  text-decoration: none;
+  padding: 1rem;
+  background-color: #3e7823;
+  color: white;
+  border-collapse: collapse;
+  border:1px solid #1f1e1c;
+  float:right;
 }
