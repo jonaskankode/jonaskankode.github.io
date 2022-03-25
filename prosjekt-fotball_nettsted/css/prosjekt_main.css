@@ -88,3 +88,18 @@ grid-column: span 3;
   border:1px solid #1f1e1c;
   float:right;
 }
+
+.flyt a:active{
+  background-color: #203e99;
+}
+
+.aktiv{
+  background-color: #203e99;
+  color: white;
+}
+
+.id img{
+  width:50px;
+  height:50px;
+  object-fit: scale-down;
+}
