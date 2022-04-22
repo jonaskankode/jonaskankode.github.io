@@ -14,34 +14,53 @@
 
   <article class="overskrift tolv-Kolonner ganske-svart-farge">
     <h2>FOOTYHUB</h2>
+
+    <div id="mySidebar" class="sidebar">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Clients</a>
+      <a href="#">Contact</a>
+    </div>
+
+    <div id="main">
+      <button class="openbtn" onclick="openNav()">☰ Kontakt oss</button>
     <!-- Legg til sånne bokser med linker til de andre nettstedene i toppen-->
 
 
+<a href="videoer.html">
   <div class="flyt">
     <div class="box-3">
       <div class="btn btn-three">
-        <span>Videoer</span>
+        Videoer
       </div>
     </div>
+</a>
 
-
+  <a href="resultater.html">
     <div class="box-3">
       <div class="btn btn-three">
-        <span>Resultater</span>
+        Resultater
       </div>
     </div>
+</a>
 
+  <a href="stats.html">
     <div class="box-3">
       <div class="btn btn-three">
-        <span>Statistikk</span>
+        Statistikk
         </div>
       </div>
+  </a>
 
+<a href="prosjekt_main.html">
     <div class="box-3">
       <div class="btn btn-three">
-        <span>Hjem</span>
+      Hjem
       </div>
       </div>
+</a>
+
 
 
   <!--    <nav>
@@ -94,16 +113,26 @@
 
 <script>
 
-var imageSources = ["../media/Luis_DIAZ.jpg", "../media/Kylian-Mbappe.jpg", "../media/Lewangoalski.jpg", "../media/vini.jpg"]
+var bildeLenker = ["../media/Luis_DIAZ.jpg", "../media/Kylian-Mbappe.jpg", "../media/Lewangoalski.jpg", "../media/vini.jpg"]
 
 var index = 0;
 setInterval (function(){
-  if (index === imageSources.length) {
+  if (index === bildeLenker.length) {
     index = 0;
   }
-  document.getElementById("image").src = imageSources[index];
+  document.getElementById("image").src = bildeLenker[index];
   index++;
 } , 2000);
+
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("main").style.marginLeft= "0";
+}
 
 </script>
 

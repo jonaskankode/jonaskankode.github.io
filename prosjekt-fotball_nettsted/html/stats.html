@@ -16,31 +16,67 @@
   <article class="overskrift tolv-Kolonner ganske-svart-farge">
     <h2>FOOTYHUB</h2>
     <!-- Legg til sånne bokser med linker til de andre nettstedene i toppen-->
-    <div class="flyt">
-      <nav>
-          <a href="main.html">Hjem</a>
-          <a href="html/stats.html">Statistikk</a>
-          <a href="#">Resultater</a>
-          <a href="html/videoer.html">Videoer</a>
-      </nav>
-    </div>
+    <a href="videoer.html">
+      <div class="flyt">
+        <div class="box-3">
+          <div class="btn btn-three">
+            Videoer
+          </div>
+        </div>
+    </a>
+
+      <a href="resultater.html">
+        <div class="box-3">
+          <div class="btn btn-three">
+            Resultater
+          </div>
+        </div>
+    </a>
+
+      <a href="stats.html">
+        <div class="box-3">
+          <div class="btn btn-three">
+            Statistikk
+            </div>
+          </div>
+      </a>
+
+    <a href="prosjekt_main.html">
+        <div class="box-3">
+          <div class="btn btn-three">
+          Hjem
+          </div>
+          </div>
+    </a>
   </article>
 
 
   <article class="tolv-Kolonner to rader">
 
+    <div class="dropdown">
+      <button class="dropbtn">Tabeller</button>
+      <div class="dropdown-content">
+        <a href="/iframe/iframe-prem.html" target="hovedframe">Premier league</a>
+        <a href="/iframe/iframe-laliga.html" target="hovedframe">La Liga</a>
+        <a href="/iframe/iframe-bundesliga.html" target="hovedframe">Bundesliga</a>
+        <a href="/iframe/iframe-Ligue-1.html" target="hovedframe">Ligue 1</a>
+        <a href="/iframe/iframe-Serie-A.html" target="hovedframe">Serie A</a>
 
-    <iframe src="iframe-prem.html" title="Premier league"> </iframe>
+      </div>
+    </div>
 
-    <iframe src="iframe-laliga.html" title="La liga"> </iframe>
+    <iframe src="" title="Premier league" name="hovedframe"> </iframe>
+        <!-- Lag program som kan brukes til å hente inn i button on:click="" -->
+        <!-- button som fremkaller en iframe med link -->
 
-    <iframe src="iframe-bundesliga.html" title="Bundesliga"> </iframe>
 
-    <iframe src="iframe-Ligue-1.html" title="Ligue 1"> </iframe>
-
-    <iframe src="iframe-Serie-A.html" title="Serie A"> </iframe>
   </article>
 </section>
+
+
+
+
+
   </body>
 
 </html>
