@@ -8,7 +8,7 @@
 
 @media only screen and (min-width:1200px){
   .innhold{
-    max-width:80rem;
+    max-width: 100%;
     margin:auto;
   }
 }
@@ -107,9 +107,10 @@ a:visited {
 }*/
 
 .aktiv{
-  background-color: #203e99;
-  color: white;
+  background-color: #126630;
 }
+
+
 
 .id img{
   width:50px;
@@ -259,5 +260,9 @@ a:visited {
 
 iframe{
   width: 100%;
-  height: 100%;
+}
+
+img{
+  position: relative;
+  align-items: start;
 }
