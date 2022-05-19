@@ -12,7 +12,9 @@
 <section class="innhold">
 
     <article class="overskrift tolv-Kolonner ganske-svart-farge">
-      <h2>FOOTYHUB</h2>
+      <div class="footyhub">
+        <h2>FOOTYHUB</h2>
+      </div>
 
 <div class="flyt">
   <a href="videoer.html">
@@ -27,7 +29,7 @@
     <a href="resultater.html">
       <div class="box-3">
         <div class="btn btn-three">
-          Resultater & statistikk
+          Resultater
         </div>
       </div>
   </a>
@@ -50,50 +52,76 @@
 </div>
     </article>
 
+    <!-- Vil lage ett slags bildegalleri, som når man trykker på bildet, så skal det komme opp en video av den spilleren> -->
+<!-- Vil også ha teksten, med spillerenes navn, over bildet-->
+<article class="tolv-Kolonner ingengap">
 
-  <article class="tolv-Kolonner to-rader">
-    <video id="vid" controls autoplay style="width:75%">
-        <source id="src" src="../media/Mbappe.mp4" type="video/mp4">
-     </video><br/><br/>
-     <button id="change1">video1</button>
-     <button id="change2">video2</button>
-     <button id="change3">video3</button>
-     </div>
-  </article>
+
+    <button onClick="reply_click(this.id)" class="btnTo container" id="_Q1"><img src="../media/mbappeTo.avif" class="bildeGalleri bottom-left"> <h3>Mbappe</h3></img></button>
+
+    <button onClick="reply_click(this.id)" class="btnTo container" id="_Q2"> <img src="../media/luis.jpg" class="bildeGalleri bottom-left"> <h3>Luis Diaz</h3></img></button>
+
+    <button onClick="reply_click(this.id)" class="btnTo container" id="_Q3"><img src="../media/vlaho.webp" class="bildeGalleri bottom-left"><h3>Vlahovic</h3></img></button>
+
+    <button onClick="reply_click(this.id)" class="btnTo container" id="_Q4"><img src="../media/Nkunku.jpg" class="bildeGalleri bottom-left"><h3>Nkunku</h3></img></button>
+
+
+    <button onClick="reply_click(this.id)" class="btnTo container" id="_Q5"><img src="../media/son.jpg" class="bildeGalleri bottom-left"> <h3>Heung Min-Son</h3></img></button>
+
+    <button onClick="reply_click(this.id)" class="btnTo container" id="_Q6"> <img src="../media/thiagoal.jpg" class="bildeGalleri bottom-left"> <h3>Thiago Alcantara</h3></img></button>
+
+    <button onClick="reply_click(this.id)" class="btnTo container" id="_Q7"><img src="../media/lewa.jpg" class="bildeGalleri bottom-left"><h3>Lewandowski</h3></img></button>
+
+    <button onClick="reply_click(this.id)" class="btnTo container" id="_Q8"><img src="../media/håland.jpg" class="bildeGalleri bottom-left"><h3>Haaland</h3></img></button>
+
+</article>
+
+
+
+<br>
+
+<article class="tolv-Kolonner liggIMidten bakgrunnsfarge to-rader paddingTo">
+  <video autoplay="on" id="videoNohighlight" muted src=""></video>
+  <video controls class="videos"  autoplay="on" id="video_Q1" style="display:none;" muted src="../media/Mbappe.mp4"></video>
+  <video controls class="videos"  autoplay="on" id="video_Q2" style="display:none;" muted src="../media/luisDiaz.mp4"></video>
+  <video controls class="videos"  autoplay="on" id="video_Q3" style="display:none;" muted src="../media/Vlahovic.mp4"></video>
+  <video controls class="videos"  autoplay="on" id="video_Q4" style="display:none;" muted src="../media/Nkunku.mp4"></video>
+
+  <video controls class="videos"  autoplay="on" id="video_Q5" style="display:none;" muted src="../media/Son.mp4"></video>
+  <video controls class="videos"  autoplay="on" id="video_Q6" style="display:none;" muted src="../media/thiagoal.mp4"></video>
+  <video controls class="videos"  autoplay="on" id="video_Q7" style="display:none;" muted src="../media/Vlahovic.mp4"></video>
+  <video controls class="videos"  autoplay="on" id="video_Q8" style="display:none;" muted src="../media/Nkunku.mp4"></video>
+
+
+
+</article>
+
+
 
   <script>
-   const v = document.getElementById("vid");
-   const s = document.getElementById("src");
 
-   function changeVideo1() {
-      s.src = '../media/Mbappe.mp4';
-      v.load();
-      v.play();
+
+   function reply_click(clicked_id){
+     var videos = document.getElementsByClassName("videos") // video-tabs is the class you give to all your video elements
+     var videoNohighlight = document.getElementById("videoNohighlight");
+     for (var i=0; i<=videos.length-1; i++){
+       if (videos[i].id == "video"+clicked_id) {
+       	console.log('true')
+         var isVisible = videos[i].style.display
+         videos[i].style.display = isVisible === "none" ? "block" : "none";
+         videoNohighlight.style.display = isVisible === "none" ? "visible" : "none";
+       } else {
+         videos[i].style.display = "none";
+       }
+     }
+
    }
 
-   function changeVideo2() {
-      s.src = '../media/luisDiaz.mp4';
-      v.load();
-      v.play();
-   }
-   function changeVideo3() {
-      s.src = '../media/Vlahovic.mp4';
-      v.load();
-      v.play();
-   }
 
-   document.getElementById("change1").onclick=changeVideo1;
-   document.getElementById("change2").onclick=changeVideo2;
-   document.getElementById("change3").onclick=changeVideo3;
+
   </script>
 
-<!--
-  <article class="fem-Kolonner to-rader fin-skrift">
 
-    <p>Footyhub er hele Norges hjem for fotball! Vi jobber for å holde deg oppdatert på the beautiful game! </p>
-
-    <p>På Footyhub kan du forvente statistikk over spillere, resultater fra kamper som spilles, og videoer fra fotballverden.</p>
--->
 
   </article>
 </section>
